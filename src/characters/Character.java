@@ -1,6 +1,6 @@
 package characters;
 
-public class Character {
+public abstract class Character {
 
     // Les informations du personnage
     private String type;       // "Warrior" ou "Wizard"
