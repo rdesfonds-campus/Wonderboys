@@ -18,10 +18,11 @@ public class Game {
         menu.showMessage("=========================");
 
         int choix = 0;
-        while (choix != 3) {
+        while (choix != 4) {
             menu.showMessage("1 - Créer un personnage");
-            menu.showMessage("2 - Jouer");
-            menu.showMessage("3 - Quitter");
+            menu.showMessage("2 - Choisir un personnage existant");
+            menu.showMessage("3 - Jouer");
+            menu.showMessage("4 - Quitter");
             choix = menu.askInt("Ton choix :");
 
             switch (choix) {
@@ -29,13 +30,16 @@ public class Game {
                     creerPersonnage();
                     break;
                 case 2:
+                    choisirPersonnage();
+                    break;
+                case 3:
                     if (currentCharacter == null) {
-                        menu.showMessage("Crée d'abord un personnage !");
+                        menu.showMessage("Crée ou choisis d'abord un personnage !");
                     } else {
                         jouer();
                     }
                     break;
-                case 3:
+                case 4:
                     menu.showMessage("Au revoir !");
                     break;
                 default:
@@ -44,11 +48,22 @@ public class Game {
             }
         }
     }
-
     private void creerPersonnage() {
         currentCharacter = heroFactory.creerPersonnage();
         menu.showMessage("Personnage créé !");
         menu.showMessage(currentCharacter.toString());
+    }
+    private void choisirPersonnage() {
+        db.PersonnageDAO dao = new db.PersonnageDAO();
+        menu.showMessage("Personnages disponibles :");
+        dao.afficherTous();
+        int id = menu.askInt("Quel id veux-tu choisir ?");
+        currentCharacter = dao.charger(id);
+        if (currentCharacter != null) {
+            menu.showMessage("Personnage chargé : " + currentCharacter.getName());
+        } else {
+            menu.showMessage("Aucun personnage trouvé avec cet id.");
+        }
     }
 
     private void jouer() {

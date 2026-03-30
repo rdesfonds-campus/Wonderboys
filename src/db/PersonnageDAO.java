@@ -55,4 +55,38 @@ public class PersonnageDAO {
             System.out.println("Erreur lecture : " + e.getMessage());
         }
     }
+    // Récupère un personnage par son id
+    public characters.Character charger(int id) {
+        String sql = "SELECT * FROM personnage WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String type = rs.getString("type");
+                String name = rs.getString("name");
+                int lifeLevel = rs.getInt("lifeLevel");
+                int attackLevel = rs.getInt("attackLevel");
+                String weaponName = rs.getString("weapon");
+                String defenseName = rs.getString("defense");
+
+                equipment.OffensiveEquipment arme = new equipment.OffensiveEquipment("Weapon", attackLevel, weaponName);
+                equipment.DefensiveEquipment defense = new equipment.DefensiveEquipment("Shield", 2, defenseName);
+
+                if (type.equals("Warrior")) {
+                    return new characters.Warrior(name, lifeLevel, attackLevel, arme, defense);
+                } else {
+                    return new characters.Wizard(name, lifeLevel, attackLevel, arme, defense);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erreur chargement : " + e.getMessage());
+        }
+
+        return null;
+    }
 }
