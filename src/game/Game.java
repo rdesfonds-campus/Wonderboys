@@ -79,6 +79,13 @@ public class Game {
             Cell caseActuelle = plateau.getCase(position);
             menu.showMessage("Tu es sur : " + caseActuelle);
             caseActuelle.interact(currentCharacter);
+
+            // Vérifie si le héros est mort après interaction
+            if (currentCharacter.getLifeLevel() <= 0) {
+                menu.showMessage("Partie terminée. Retour au menu principal.");
+                currentCharacter = null; // remet à zéro pour forcer la création d'un nouveau perso
+                return;
+            }
         }
     }
 }
