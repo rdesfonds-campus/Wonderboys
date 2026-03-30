@@ -80,7 +80,20 @@ public class Game {
             menu.showMessage("Tu es sur : " + caseActuelle);
             caseActuelle.interact(currentCharacter);
 
-            if (currentCharacter.getLifeLevel() <= 0) {
+            // Gestion du résultat de combat
+            if (caseActuelle instanceof EnemyCell) {
+                CombatResult resultat = ((EnemyCell) caseActuelle).getDernierResultat();
+                if (resultat.getIssue() == CombatResult.Issue.DEFAITE) {
+                    menu.showMessage("Partie terminée. Retour au menu principal.");
+                    currentCharacter = null;
+                    return;
+                } else if (resultat.getIssue() == CombatResult.Issue.FUITE) {
+                    position = Math.max(1, position - resultat.getReculFuite());
+                    menu.showMessage("Tu recules à la case " + position + ".");
+                }
+            }
+
+            if (currentCharacter != null && currentCharacter.getLifeLevel() <= 0) {
                 menu.showMessage("Partie terminée. Retour au menu principal.");
                 currentCharacter = null;
                 return;

@@ -8,6 +8,7 @@ import characters.enemies.Orc;
 public class EnemyCell extends Cell {
 
     private Enemy ennemi;
+    private CombatResult dernierResultat;
 
     public EnemyCell(Menu menu) {
         super(menu);
@@ -22,7 +23,11 @@ public class EnemyCell extends Cell {
     @Override
     public void interact(characters.Character hero) {
         CombatSystem combat = new CombatSystem(menu);
-        combat.combattre(hero, ennemi);
+        dernierResultat = combat.combattre(hero, ennemi);
+    }
+
+    public CombatResult getDernierResultat() {
+        return dernierResultat;
     }
 
     @Override

@@ -14,13 +14,21 @@ public class CombatSystem {
         this.d6  = new Dice(6);
     }
 
-    public void combattre(characters.Character hero, Enemy ennemi) {
+    public CombatResult combattre(characters.Character hero, Enemy ennemi) {
         menu.showMessage("\n⚔ Un " + ennemi.getName() + " apparaît !");
         menu.showMessage(ennemi.toString());
 
         while (hero.getLifeLevel() > 0 && ennemi.getLifeLevel() > 0) {
 
-            menu.askString("Appuie sur Entrée pour attaquer...");
+            menu.showMessage("1 - Attaquer");
+            menu.showMessage("2 - Fuir");
+            int choix = menu.askInt("Ton choix :");
+
+            if (choix == 2) {
+                int recul = d6.roll();
+                menu.showMessage("Tu fuis ! Tu recules de " + recul + " cases.");
+                return new CombatResult(CombatResult.Issue.FUITE, recul);
+            }
 
             // Tour du héros
             int jet = d20.roll();
@@ -42,7 +50,7 @@ public class CombatSystem {
 
             if (ennemi.getLifeLevel() <= 0) {
                 menu.showMessage("Tu as vaincu le " + ennemi.getName() + " !");
-                return;
+                return new CombatResult(CombatResult.Issue.VICTOIRE, 0);
             }
 
             // Tour de l'ennemi
@@ -54,8 +62,10 @@ public class CombatSystem {
             if (hero.getLifeLevel() <= 0) {
                 menu.showMessage("Tu as été vaincu par le " + ennemi.getName() + "...");
                 menu.showMessage("GAME OVER !");
-                return;
+                return new CombatResult(CombatResult.Issue.DEFAITE, 0);
             }
         }
+
+        return new CombatResult(CombatResult.Issue.DEFAITE, 0);
     }
 }
