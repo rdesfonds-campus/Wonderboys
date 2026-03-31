@@ -14,6 +14,8 @@ public abstract class Character {
     private DefensiveEquipment defense;   // bouclier ou potion
     private int id;
     private int score;
+    private int maxLifeLevel = 10;
+
 
     // Le constructeur : sert à créer un personnage avec ses valeurs de départ
     public Character(String type, String name, int lifeLevel, int attackLevel, OffensiveEquipment weapon, DefensiveEquipment defense) {
@@ -34,6 +36,8 @@ public abstract class Character {
     public DefensiveEquipment getDefense()     { return defense; }
         public int getId()            { return id; }
     public int getScore()         { return score; }
+    public int getMaxLifeLevel()             { return maxLifeLevel; }
+
 
     // Setters : pour MODIFIER les valeurs depuis l'extérieur
     public void setName(String name)           { this.name = name; }
@@ -43,6 +47,7 @@ public abstract class Character {
     public void setDefense(DefensiveEquipment defense)     { this.defense = defense; }
     public void setId(int id)     { this.id = id; }
     public void setScore(int score) { this.score = score; }
+    public void setMaxLifeLevel(int max)     { this.maxLifeLevel = max; }
 
 
 

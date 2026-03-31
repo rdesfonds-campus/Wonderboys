@@ -1,7 +1,7 @@
 package game;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 
 public class Board {
 
@@ -14,14 +14,29 @@ public class Board {
     }
 
     private void initialiser(Menu menu) {
-        for (int i = 0; i < TOTAL; i++) {
-            switch (i % 4) {
-                case 0: cases.add(new EmptyCell(menu));        break;
-                case 1: cases.add(new EnemyCell(menu, i + 1)); break;
-                case 2: cases.add(new WeaponCell(menu));       break;
-                case 3: cases.add(new PotionCell(menu));       break;
-            }
+
+        // 5 potions
+        for (int i = 0; i < 5; i++) {
+            cases.add(new PotionCell(menu));
         }
+
+        // 5 armes
+        for (int i = 0; i < 5; i++) {
+            cases.add(new WeaponCell(menu));
+        }
+
+        // 16 ennemis - on leur donnera leur vraie position après le mélange
+        for (int i = 0; i < 16; i++) {
+            cases.add(new EnemyCell(menu, i + 1));
+        }
+
+        // Cases vides pour compléter jusqu'à 64
+        while (cases.size() < TOTAL) {
+            cases.add(new EmptyCell(menu));
+        }
+
+        // Mélange aléatoire
+        Collections.shuffle(cases);
     }
 
     public Cell getCase(int position) {

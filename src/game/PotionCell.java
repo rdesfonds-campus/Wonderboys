@@ -11,7 +11,8 @@ public class PotionCell extends Cell {
     @Override
     public void interact(characters.Character hero) {
         int anciensPV = hero.getLifeLevel();
-        hero.setLifeLevel(anciensPV + SOIN);
+        int nouveauxPV = Math.min(anciensPV + SOIN, hero.getMaxLifeLevel());
+        hero.setLifeLevel(nouveauxPV);
         menu.showMessage("Tu trouves une potion et récupères " + SOIN + " PV !");
         menu.showMessage(hero.getName() + " PV : " + anciensPV + " → " + hero.getLifeLevel());
     }

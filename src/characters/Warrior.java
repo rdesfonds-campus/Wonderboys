@@ -9,6 +9,7 @@ public class Warrior extends Character {
     public Warrior(String name, int lifeLevel, int attackLevel,
                    OffensiveEquipment weapon, DefensiveEquipment defense) {
         super("Warrior", name, lifeLevel, attackLevel, weapon, defense);
+        setMaxLifeLevel(10);
     }
 
 

@@ -8,6 +8,7 @@ public class Wizard extends Character {
     public Wizard(String name, int lifeLevel, int attackLevel,
                   OffensiveEquipment weapon, DefensiveEquipment defense) {
         super("Wizard", name, lifeLevel, attackLevel, weapon, defense);
+        setMaxLifeLevel(6);
     }
 
     @Override
