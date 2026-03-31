@@ -1,0 +1,36 @@
+@startuml
+package game {
+
+    class Game {
+        - menu : Menu
+        - currentCharacter : Character
+        - position : int
+        - heroFactory : HeroFactory
+    }
+
+    class TourDeJeu
+    enum EtatPartie
+    class Menu
+}
+
+package db {
+
+    class PersonnageDAO
+}
+
+Game --> Menu
+Game --> Character
+Game --> HeroFactory
+Game --> Board
+Game --> TourDeJeu
+Game --> Dice
+Game --> ResultatTour
+
+TourDeJeu --> Board
+TourDeJeu --> EtatPartie
+TourDeJeu --> Menu
+TourDeJeu --> Dice
+
+HeroFactory --> PersonnageDAO
+PersonnageDAO --> Character
+@enduml

@@ -1,0 +1,52 @@
+@startuml
+package characters {
+
+    abstract class Character {
+        - type : String
+        - name : String
+        - lifeLevel : int
+        - attackLevel : int
+        - weapon : OffensiveEquipment
+        - defense : DefensiveEquipment
+        - id : int
+        - score : int
+        - maxLifeLevel : int
+    }
+
+    class Warrior
+    class Wizard
+
+    class HeroFactory {
+        - menu : Menu
+        + creerPersonnage() : Character
+    }
+}
+
+package "characters.enemies" {
+
+    abstract class Enemy {
+        - scoreValue : int
+    }
+
+    class Goblin
+    class Orc
+    class Dragon
+}
+
+Character <|-- Warrior
+Character <|-- Wizard
+
+Character <|-- Enemy
+Enemy <|-- Goblin
+Enemy <|-- Orc
+Enemy <|-- Dragon
+
+Character --> OffensiveEquipment
+Character --> DefensiveEquipment
+
+HeroFactory --> Character
+HeroFactory --> Warrior
+HeroFactory --> Wizard
+HeroFactory --> Menu
+HeroFactory --> "PersonnageDAO"
+@enduml

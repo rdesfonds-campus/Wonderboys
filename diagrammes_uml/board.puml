@@ -1,0 +1,36 @@
+@startuml
+package board {
+
+    class Board {
+        - TOTAL : int
+        - cases : ArrayList<Cell>
+    }
+
+    abstract class Cell {
+        - menu : Menu
+        + interact(hero : Character)
+    }
+
+    class EmptyCell
+    class EnemyCell {
+        - ennemi : Enemy
+        - dernierResultat : CombatResult
+        + getDernierResultat() : CombatResult
+    }
+    class PotionCell
+    class WeaponCell {
+        - arme : OffensiveEquipment
+    }
+}
+
+Board "1" o-- "*" Cell
+Cell <|-- EmptyCell
+Cell <|-- EnemyCell
+Cell <|-- PotionCell
+Cell <|-- WeaponCell
+
+Cell --> Menu
+EnemyCell --> Enemy
+EnemyCell --> CombatResult
+WeaponCell --> OffensiveEquipment
+@enduml

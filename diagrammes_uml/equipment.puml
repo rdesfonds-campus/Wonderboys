@@ -1,0 +1,22 @@
+@startuml
+package equipment {
+
+    class OffensiveEquipment {
+        - type : String
+        - attackLevel : int
+        - name : String
+    }
+
+    class DefensiveEquipment {
+        - type : String
+        - defenseLevel : int
+        - name : String
+    }
+}
+
+Character --> OffensiveEquipment
+Character --> DefensiveEquipment
+Enemy --> OffensiveEquipment
+Enemy --> DefensiveEquipment
+WeaponCell --> OffensiveEquipment
+@enduml

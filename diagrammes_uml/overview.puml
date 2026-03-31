@@ -1,0 +1,79 @@
+@startuml
+package game {
+    class Game
+    class TourDeJeu
+    class Menu
+    enum EtatPartie
+}
+
+package board {
+    class Board
+    abstract class Cell
+    class EmptyCell
+    class EnemyCell
+    class PotionCell
+    class WeaponCell
+}
+
+package characters {
+    abstract class Character
+    class Warrior
+    class Wizard
+}
+
+package "characters.enemies" {
+    abstract class Enemy
+    class Goblin
+    class Orc
+    class Dragon
+}
+
+package equipment {
+    class OffensiveEquipment
+    class DefensiveEquipment
+}
+
+package combat {
+    class CombatSystem
+    class CombatResult
+    class Dice
+    class ResultatTour
+}
+
+package db {
+    class PersonnageDAO
+}
+
+Game --> Board
+Game --> Menu
+Game --> HeroFactory
+Game --> TourDeJeu
+
+Board o-- Cell
+Cell <|-- EmptyCell
+Cell <|-- EnemyCell
+Cell <|-- PotionCell
+Cell <|-- WeaponCell
+
+Character <|-- Warrior
+Character <|-- Wizard
+Character <|-- Enemy
+Enemy <|-- Goblin
+Enemy <|-- Orc
+Enemy <|-- Dragon
+
+Character --> OffensiveEquipment
+Character --> DefensiveEquipment
+EnemyCell --> Enemy
+WeaponCell --> OffensiveEquipment
+
+TourDeJeu --> Dice
+TourDeJeu --> ResultatTour
+CombatSystem --> Character
+CombatSystem --> Enemy
+CombatSystem --> CombatResult
+
+HeroFactory --> Character
+HeroFactory --> PersonnageDAO
+PersonnageDAO --> Character
+@enduml

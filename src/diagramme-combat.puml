@@ -1,0 +1,8 @@
+@startuml
+class Character
+class Warrior
+class Wizard
+
+Character <|-- Warrior
+Character <|-- Wizard
+@enduml
