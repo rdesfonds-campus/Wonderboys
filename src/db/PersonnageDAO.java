@@ -1,6 +1,5 @@
 package db;
 
-import characters.Character;
 import characters.Warrior;
 import characters.Wizard;
 import equipment.DefensiveEquipment;
@@ -8,9 +7,24 @@ import equipment.OffensiveEquipment;
 
 import java.sql.*;
 
+/**
+ * Objet d'accès aux données (DAO) pour les personnages.
+ * <p>
+ * Gère toutes les opérations SQL sur la table {@code personnage} :
+ * sauvegarde, chargement, affichage et mise à jour.
+ * Utilise {@link DatabaseConnection} pour obtenir les connexions.
+ * </p>
+ *
+ * @author Romain D
+ * @version 1.0
+ */
 public class PersonnageDAO {
 
-    // Enregistre un nouveau personnage en base
+    /**
+     * Enregistre un nouveau personnage dans la base de données.
+     *
+     * @param perso personnage à sauvegarder
+     */
     public void sauvegarder(characters.Character perso) {
         String sql = "INSERT INTO personnage (type, name, lifeLevel, attackLevel, weapon, defense) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -22,7 +36,7 @@ public class PersonnageDAO {
             stmt.setString(2, perso.getName());
             stmt.setInt(3, perso.getLifeLevel());
             stmt.setInt(4, perso.getAttackLevel());
-            stmt.setString(5, perso.getWeapon() != null ? perso.getWeapon().getName() : null);
+            stmt.setString(5, perso.getWeapon()  != null ? perso.getWeapon().getName()  : null);
             stmt.setString(6, perso.getDefense() != null ? perso.getDefense().getName() : null);
 
             stmt.executeUpdate();
@@ -33,6 +47,12 @@ public class PersonnageDAO {
         }
     }
 
+    /**
+     * Met à jour les points de vie, le niveau d'attaque et le score
+     * d'un personnage existant en base.
+     *
+     * @param perso personnage à mettre à jour (doit avoir un id valide)
+     */
     public void mettreAJour(characters.Character perso) {
         String sql = "UPDATE personnage SET lifeLevel = ?, attackLevel = ?, score = ? WHERE id = ?";
 
@@ -52,7 +72,9 @@ public class PersonnageDAO {
         }
     }
 
-    // Récupère tous les personnages
+    /**
+     * Affiche dans la console tous les personnages de la base de données.
+     */
     public void afficherTous() {
         String sql = "SELECT * FROM personnage";
 
@@ -74,7 +96,13 @@ public class PersonnageDAO {
             System.out.println("Erreur lecture : " + e.getMessage());
         }
     }
-    // Récupère un personnage par son id
+
+    /**
+     * Charge un personnage depuis la base de données par son identifiant.
+     *
+     * @param id identifiant du personnage en base
+     * @return le personnage reconstruit, ou {@code null} si non trouvé
+     */
     public characters.Character charger(int id) {
         String sql = "SELECT * FROM personnage WHERE id = ?";
 
@@ -85,21 +113,24 @@ public class PersonnageDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                String type = rs.getString("type");
-                String name = rs.getString("name");
-                int lifeLevel = rs.getInt("lifeLevel");
-                int attackLevel = rs.getInt("attackLevel");
+                String type       = rs.getString("type");
+                String name       = rs.getString("name");
+                int lifeLevel     = rs.getInt("lifeLevel");
+                int attackLevel   = rs.getInt("attackLevel");
                 String weaponName = rs.getString("weapon");
-                String defenseName = rs.getString("defense");
+                String defName    = rs.getString("defense");
 
-                equipment.OffensiveEquipment arme = new equipment.OffensiveEquipment("Weapon", attackLevel, weaponName);
-                equipment.DefensiveEquipment defense = new equipment.DefensiveEquipment("Shield", 2, defenseName);
+                OffensiveEquipment arme    = new OffensiveEquipment("Weapon", attackLevel, weaponName);
+                DefensiveEquipment defense = new DefensiveEquipment("Shield", 2, defName);
 
+                characters.Character perso;
                 if (type.equals("Warrior")) {
-                    return new characters.Warrior(name, lifeLevel, attackLevel, arme, defense);
+                    perso = new Warrior(name, lifeLevel, attackLevel, arme, defense);
                 } else {
-                    return new characters.Wizard(name, lifeLevel, attackLevel, arme, defense);
+                    perso = new Wizard(name, lifeLevel, attackLevel, arme, defense);
                 }
+                perso.setId(id);
+                return perso;
             }
 
         } catch (SQLException e) {
