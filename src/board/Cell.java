@@ -2,7 +2,7 @@ package board;
 
 import game.Menu;
 
-public abstract class Cell {
+public abstract class Cell implements Interactable {
 
     protected Menu menu;
 
@@ -10,6 +10,7 @@ public abstract class Cell {
         this.menu = menu;
     }
 
+    @Override
     public abstract void interact(characters.Character hero);
 
     @Override
